@@ -18,36 +18,20 @@ from datetime import datetime
 @login_required
 def index(request):
     # The following line will get the logged-in user (if there is one) within any view function
-
-    today2 = determine_day()
-
     logged_in_user = request.user
     try:
         # This line will return the customer record of the logged-in user if one exists
         logged_in_employee = Employee.objects.get(user=logged_in_user)
-
         today = date.today()
-
-        context = {
-            'logged_in_employee': logged_in_employee,
-            'today': today
-        }
-
+        logged_in_employee_zipcode = logged_in_employee.zip_code
         Customer = apps.get_model('customers.Customer')
-        todays_pickups = Customer.objects.filter(
-            zip_code=logged_in_employee.zip_code).filter(weekly_pickup=today2).exclude(suspend_start__lte=today, suspend_end__gte=today).exclude(
-            date_of_last_pickup = today)
-
-        # today_pickups = customers_in_zip.objects.filter(weekly_pickup=today2)
-        one_time_pickups = Customer.objects.filter(
-            zip_code=logged_in_employee.zip_code).filter(one_time_pickup=today).exclude(suspend_start__lte=today, suspend_end__gte=today).exclude(
-            date_of_last_pickup = today)
-
+        todays_customers = Customer.objects.filter(zip_code=logged_in_employee_zipcode)
+        #customer_day = todays_customers.filter(weekly_pickup=today)
+        #non_suspended_customer = customer_day.exclude(suspended_account=today)
+        #customer_pick_up_due = non_suspended_customer.exclude(todays_pickups=confirmed)
         context = {
-            'todays_pickups': todays_pickups,
-            'one_time_pickups': one_time_pickups
+            'todays_customers': todays_customers
         }
-
         return render(request, 'employees/index.html', context)
     except ObjectDoesNotExist:
         return HttpResponseRedirect(reverse('employees:create'))

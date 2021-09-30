@@ -7,20 +7,30 @@
     Hello {{ logged_in_employee.name }}!
     Address: {{ logged_in_employee.address }} {{logged_in_employee.zip_code }}<br />
     <a href= "{% url 'employees:edit_profile' %}">Edit Profile</a>
+  <br/>
+  <br/>  
+  <h2>Today's Pickups</h2>
+  <!-- (list)
+  -Customers in Zipcode(.filter?)
+  -Customers with pickup day is today's day of week or One-time pickup date that falls on today(.filter?)
+  -Non-suspended accounts(.exclude?)
+  -Trash has not yet been picked up today(.exclude?) -->
 
-    <ul>
-      <h6> Today's Pickups</h6>
-      <h2>Recurring Pickups</h2>
-      {% for customer in todays_pickups %}
-      <li>{{ customer.name }} - {{customer.address}} - {{ customer.zip_code }}</li> -  <a href= "{% url 'employees:confirm_pickup' customer.id %}">Confirm Pickup</a>
-    </ul>
-    {% endfor %}
 
-    <h2>One-Time Pickups</h2>
-    {% for customer in one_time_pickups %}
+  <ul>
+    <h6> Today's Pickups</h6>
+    <h2>Recurring Pickups</h2>
+    {% for customer in todays_pickups %}
     <li>{{ customer.name }} - {{customer.address}} - {{ customer.zip_code }}</li> -  <a href= "{% url 'employees:confirm_pickup' customer.id %}">Confirm Pickup</a>
   </ul>
   {% endfor %}
+
+  <h2>One-Time Pickups</h2>
+  {% for customer in one_time_pickups %}
+  <li>{{ customer.name }} - {{customer.address}} - {{ customer.zip_code }}</li> -  <a href= "{% url 'employees:confirm_pickup' customer.id %}">Confirm Pickup</a>
+</ul>
+{% endfor %}
+
 
   {% else %}
    

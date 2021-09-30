@@ -117,7 +117,7 @@ def edit_profile(request):
     if request.method == "POST":
         name_from_form = request.POST.get('name')
         address_from_form = request.POST.get('address')
-        zip_from_form = request.POST.get('zip_code')
+        zip_from_form = request.POST.get('zipcode')
         logged_in_employee.name = name_from_form
         logged_in_employee.address = address_from_form
         logged_in_employee.zip_code = zip_from_form
